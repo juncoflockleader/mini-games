@@ -14,7 +14,8 @@ namespace MiniGames
         public const string LauncherScene = "Launcher";
         public static readonly GameDefinition[] Games =
         {
-            new GameDefinition("Breakout", "Breakout", "Find your angle. Clear the bricks. Keep it going.")
+            new GameDefinition("Breakout", "Breakout", "Find your angle. Clear the bricks. Keep it going."),
+            new GameDefinition("Sprout Run", "SproutRun", "Run a little. Grow a lot. Build your own way through.")
         };
     }
 }

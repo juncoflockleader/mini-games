@@ -66,6 +66,7 @@ namespace MiniGames
             var rect = Group(parent, content, x, y, w, h);
             var text = rect.gameObject.AddComponent<Text>();
             text.font = font; text.text = content; text.fontSize = size; text.color = color;
+            text.supportRichText = false;
             text.fontStyle = bold ? FontStyle.Bold : FontStyle.Normal;
             text.alignment = align; text.raycastTarget = false;
             text.horizontalOverflow = HorizontalWrapMode.Wrap;

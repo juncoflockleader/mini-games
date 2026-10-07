@@ -1,5 +1,6 @@
 using System.IO;
 using MiniGames.Breakout;
+using MiniGames.SproutRun;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEditor.SceneManagement;
@@ -11,6 +12,8 @@ namespace MiniGames.Editor
     {
         public const string LauncherPath = "Assets/MiniGames/Scenes/Launcher.unity";
         public const string BreakoutPath = "Assets/MiniGames/Scenes/Breakout.unity";
+        public const string SproutRunPath = "Assets/MiniGames/Scenes/SproutRun.unity";
+        static string[] ScenePaths => new[] { LauncherPath, BreakoutPath, SproutRunPath };
 
         [MenuItem("Mini Games/Create Missing Scenes")]
         public static void CreateMissingScenes()
@@ -19,10 +22,11 @@ namespace MiniGames.Editor
             AssetDatabase.Refresh();
             if (!File.Exists(LauncherPath)) CreateScene<LauncherController>(LauncherPath, "Mini Games Launcher");
             if (!File.Exists(BreakoutPath)) CreateScene<BreakoutController>(BreakoutPath, "Breakout");
-            EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(LauncherPath, true), new EditorBuildSettingsScene(BreakoutPath, true) };
+            if (!File.Exists(SproutRunPath)) CreateScene<RunnerController>(SproutRunPath, "Sprout Run");
+            EditorBuildSettings.scenes = System.Array.ConvertAll(ScenePaths, path => new EditorBuildSettingsScene(path, true));
             PlayerSettings.companyName = "Junco";
             PlayerSettings.productName = "Mini Games";
-            PlayerSettings.bundleVersion = "0.1.0";
+            PlayerSettings.bundleVersion = "0.2.0";
             PlayerSettings.defaultScreenWidth = 1440;
             PlayerSettings.defaultScreenHeight = 900;
             PlayerSettings.fullScreenMode = FullScreenMode.Windowed;
@@ -55,11 +59,11 @@ namespace MiniGames.Editor
 
         static void Build(BuildTarget target, string output)
         {
-            if (!File.Exists(LauncherPath) || !File.Exists(BreakoutPath)) CreateMissingScenes();
+            if (!File.Exists(LauncherPath) || !File.Exists(BreakoutPath) || !File.Exists(SproutRunPath)) CreateMissingScenes();
             Directory.CreateDirectory(Path.GetDirectoryName(output));
             var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
             {
-                scenes = new[] { LauncherPath, BreakoutPath },
+                scenes = ScenePaths,
                 locationPathName = output,
                 target = target,
                 options = BuildOptions.None

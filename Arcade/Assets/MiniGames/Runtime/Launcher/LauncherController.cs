@@ -34,16 +34,18 @@ namespace MiniGames
             var play = ui.Button(card, "PLAY BREAKOUT    >", 32, 492, 544, 65,
                 () => SceneManager.LoadScene(GameCatalog.Games[0].Scene), true);
             ui.Label(root, "3 LEVELS   /   MOUSE + KEYBOARD", 774, 781, 530, 22, 11, ArcadeUi.Muted, false, TextAnchor.MiddleCenter);
+            // Additional registered games own their own scenes and return through the catalog.
+            for (int i = 1; i < GameCatalog.Games.Length; i++)
+            {
+                var game = GameCatalog.Games[i];
+                ui.Button(root, "PLAY " + game.Title.ToUpperInvariant() + "    >", 88, 650 + (i - 1) * 90, 490, 52, () => SceneManager.LoadScene(game.Scene), true);
+                ui.Label(root, "AUTO-RUNNER  /  STACKING GROWTH  /  LEVEL EDITOR", 88, 714 + (i - 1) * 90, 520, 30, 11, ArcadeUi.Muted);
+            }
+            Canvas.ForceUpdateCanvases();
             EventSystem.current.SetSelectedGameObject(play.gameObject);
             playAction = new InputAction("Play featured game", InputActionType.Button, "<Keyboard>/space");
             playAction.performed += _ => SceneManager.LoadScene(GameCatalog.Games[0].Scene);
             playAction.Enable();
-            // Additional registered games get explicit launch buttons; each owns its own scene.
-            for (int i = 1; i < GameCatalog.Games.Length; i++)
-            {
-                var game = GameCatalog.Games[i];
-                ui.Button(root, game.Title, 88, 650 + (i - 1) * 58, 490, 48, () => SceneManager.LoadScene(game.Scene));
-            }
         }
 
         void OnDestroy() => playAction?.Dispose();

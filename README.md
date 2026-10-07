@@ -1,6 +1,9 @@
 # Mini Games
 
-A growing Unity arcade collection. The first game is **Breakout**: three brick patterns, three lives, bounce streaks, and a saved personal best.
+A growing Unity arcade collection for desktop:
+
+- **Breakout**: three brick patterns, three lives, bounce streaks, and a saved personal best.
+- **Sprout Run**: an automatic runner with four growth sizes, breakable crates, three stages, and an in-game level editor. See the [design and research notes](docs/sprout-run-design.md).
 
 ## Open and play
 
@@ -10,7 +13,9 @@ Requires **Unity 6000.6.3f1** (the version installed on this host). The Unity pr
 unity open ./Arcade
 ```
 
-Open `Assets/MiniGames/Scenes/Launcher.unity` and press Play. Choose **Play Breakout**, or press Space. You can also open the Breakout scene directly.
+Open `Assets/MiniGames/Scenes/Launcher.unity` and press Play. Choose either game; Space opens Breakout. You can also open either game's scene directly.
+
+### Breakout
 
 | Action | Control |
 | --- | --- |
@@ -23,6 +28,26 @@ Open `Assets/MiniGames/Scenes/Launcher.unity` and press Play. Choose **Play Brea
 
 Moving away from the game pauses an active round. Use Resume when you return. Aim with the edge of the paddle for sharper angles. Consecutive brick hits increase your score multiplier up to 5×; a paddle hit resets the streak. Clear all three patterns to win.
 
+### Sprout Run
+
+Your sprout runs right automatically. Gold seeds grow it through four sizes; size two and above can break crates. Blue dew shrinks it one size. Spikes and small-sprout beetle collisions shrink it, or end the attempt at the smallest size. Bigger sprouts squash beetles. Solid ground remains solid at every size. Reach the finish post to advance.
+
+| Action | Control |
+| --- | --- |
+| Start / retry / next stage | Space or the on-screen button |
+| Jump | Space, W, Up, or left-click in the playfield; hold for height |
+| Pause / resume | Escape |
+| Retry from the start | R |
+| Open editor / test draft / return from playtest | E |
+| Toggle sound | M |
+| Choose stage | Left / right buttons beside the stage name |
+
+In the editor, choose a palette item and paint with the left mouse button. Right-click erases. Pan with A / D, left / right arrows, or the mouse wheel over the grid. Place supported start and finish markers, then choose **Test**. Playtesting uses a copy; E returns to the unchanged draft. **Play** returns to the built-in stages while keeping the draft in memory.
+
+**Save** and **Load** use one local draft slot. **JSON** supports clipboard import/export and writes `export.json`. Imported levels are validated before replacing the draft; arbitrary imported stages are not guaranteed solvable. The initial canvas is 80 × 12 tiles. Unsaved changes are marked and protected before replacement or returning to the collection; save before closing the application.
+
+Files are stored in `Application.persistentDataPath/SproutRun/` (normally `~/Library/Application Support/Junco/Mini Games/SproutRun/` on macOS). `draft.json.bak` retains the previous save. To recover it, paste its contents into the JSON dialog and import. Mobile layouts, online sharing, undo/redo, and multiple named save slots are future work.
+
 ## Project layout
 
 ```text
@@ -32,7 +57,8 @@ Arcade/
       Shared/                 Shared UI and game catalog
       Launcher/               Collection menu
       Games/Breakout/         Game controller and independent simulation
-    Scenes/                   Launcher and Breakout
+      Games/SproutRun/        Runner simulation, levels, runtime editor, and persistence
+    Scenes/                   Launcher, Breakout, and Sprout Run
     Editor/                   Scene setup and desktop builds
     Tests/EditMode/           Collision and session tests
   Packages/                   Pinned Unity package manifests
@@ -59,7 +85,7 @@ Use **Window → General → Test Runner → EditMode → Run All** in the Edito
 unity test ./Arcade --mode EditMode --output ./Arcade/TestResults/editmode.xml
 ```
 
-Tests cover swept collisions, scoring, paddle bounds, pause/resume, lives, restarting, and the complete three-level progression.
+Tests cover Breakout collisions and progression, plus runner growth clearance, short/held jumps, crate collisions, damage protection, pits, pause, all three authored stages, frame-rate independence, JSON validation, and save/load backups.
 
 ## Desktop builds
 
@@ -71,6 +97,6 @@ For a batch build, save and close the project's Editor first:
 unity build ./Arcade --target StandaloneOSX --execute-method MiniGames.Editor.ProjectSetup.BuildMac
 ```
 
-The scenes are committed. **Mini Games → Create Missing Scenes** regenerates missing starter scenes and restores the initial two-scene build list; it leaves existing scene files intact. Extend that setup utility as you add games.
+The scenes are committed. **Mini Games → Create Missing Scenes** regenerates missing scenes and restores the three-scene build list; it leaves existing scene files intact. Extend that setup utility as you add games.
 
 Commit `Assets` (including `.meta` files), `Packages`, and `ProjectSettings`. Unity caches, local preferences, screenshots, test results, and builds are ignored.

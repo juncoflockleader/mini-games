@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MiniGames/Scenes/Breakout.unity
     guid: ab11e420be9754ea584df0c4d92d179a
+  - enabled: 1
+    path: Assets/MiniGames/Scenes/SproutRun.unity
+    guid: c91deb36609954853a9cceec58b8073a
   m_configObjects: {}
