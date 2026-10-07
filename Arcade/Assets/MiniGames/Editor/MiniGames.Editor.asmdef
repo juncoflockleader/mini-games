@@ -1,0 +1,6 @@
+{
+  "name": "MiniGames.Editor",
+  "rootNamespace": "MiniGames.Editor",
+  "references": ["MiniGames.Runtime"],
+  "includePlatforms": ["Editor"]
+}

@@ -1,0 +1,5 @@
+{
+  "name": "MiniGames.Runtime",
+  "rootNamespace": "MiniGames",
+  "references": ["Unity.InputSystem", "Unity.ugui"]
+}

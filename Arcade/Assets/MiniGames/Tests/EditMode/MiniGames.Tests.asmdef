@@ -1,0 +1,6 @@
+{
+  "name": "MiniGames.Tests",
+  "references": ["MiniGames.Runtime"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}
